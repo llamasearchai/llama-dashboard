@@ -1,0 +1,132 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "llama-dashboard"
+version = "0.1.0"
+description = "Web dashboard for monitoring and interacting with the LlamaAI Ecosystem."
+readme = "README.md"
+requires-python = ">=3.8"
+license = {file = "LICENSE"}
+authors = [
+    {name = "Your Name", email = "your.email@example.com"}, # Replace
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: End Users/Desktop",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Scientific/Engineering :: Visualization",
+    "Topic :: Internet :: WWW/HTTP :: Dynamic Content :: CGI Tools/Libraries",
+]
+dependencies = [
+    # Core dashboarding library (Choose one or adjust)
+    "streamlit>=1.20.0",
+    # "dash>=2.9.0",
+    # "dash-bootstrap-components>=1.4.0",
+    # "plotly>=5.10.0", # Usually needed for Dash/Streamlit plots
+
+    # Data handling
+    "pandas>=1.5.0",
+    "numpy>=1.21.0",
+
+    # API communication
+    "httpx>=0.24.0", # For calling LlamaSearchAI or other backend APIs
+
+    # Utilities
+    "loguru>=0.7.0",
+    "pydantic>=1.10.0", # For modeling API responses
+    
+    # Security
+    "cryptography>=3.4.6", # Added for core encryption
+
+    # Internal Dependencies (APIs it might call)
+    # "llamasearchai-pkg>=0.2.0", # Need API client or direct calls
+    # "llama-monitor-pkg>=0.1.0", # If displaying monitoring data
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.3.1",
+    "pytest-cov>=4.1.0",
+    "black>=23.3.0",
+    "isort>=5.12.0",
+    "mypy>=1.2.0",
+    "ruff>=0.0.260",
+    "pre-commit>=3.3.1",
+    "pytest-mock>=3.10.0",
+    "httpx", # For mocking API calls
+    # Add testing tools specific to the chosen framework if needed
+    # e.g., for Dash: "dash[testing]"
+]
+docs = [
+    "mkdocs>=1.4.2",
+    "mkdocs-material>=9.1.6",
+    "mkdocstrings[python]>=0.20.0",
+]
+gcp = [
+    "google-cloud-bigquery>=3.0.0",
+    "google-cloud-storage>=2.0.0",
+    "google-cloud-firestore>=2.0.0",
+    "google-auth>=2.0.0",
+]
+azure = [
+    "azure-storage-blob>=12.10.0",
+    "azure-cosmos>=4.0.0",
+    "pyodbc>=4.0.0",
+]
+mlx = [
+    "mlx>=0.6.0", # Check for appropriate version
+]
+security = [
+    # Potentially add other security-related optional deps here
+]
+
+# Combine all optional dependencies for easy installation
+all = [
+    "llama-dashboard[dev,docs,gcp,azure,mlx,security]"
+]
+
+[project.urls]
+"Homepage" = "https://github.com/yourusername/llama-dashboard-pkg"
+"Bug Tracker" = "https://github.com/yourusername/llama-dashboard-pkg/issues"
+"Documentation" = "https://yourusername.github.io/llama-dashboard-pkg/"
+
+[project.scripts]
+llama-dashboard = "llama_dashboard.app:run" # Example entry point
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/llama_dashboard"]
+
+[tool.black]
+line-length = 88
+target-version = ["py38"]
+
+[tool.isort]
+profile = "black"
+line_length = 88
+
+[tool.mypy]
+python_version = "3.8"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+ignore_missing_imports = true # Streamlit/Dash might need specific ignores
+
+[tool.ruff]
+line-length = 88
+select = ["E", "W", "F", "I", "C", "B", "A"]
+ignore = ["E501"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py" 
